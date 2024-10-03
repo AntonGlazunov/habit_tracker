@@ -177,7 +177,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
@@ -191,36 +191,12 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-# SWAGGER_SETTINGS = {
-#     'VALIDATOR_URL': 'http://localhost:8189',
-#     'SECURITY_DEFINITIONS': {
-#           'Basic': {
-#                 'type': 'basic'
-#           },
-#           'Bearer': {
-#                 'type': 'apiKey',
-#                 'name': 'Authorization',
-#                 'in': 'header'
-#           }
-#        }
+# SPECTACULAR_SETTINGS = {
+#     'TITLE': 'Your Project API',
+#     'DESCRIPTION': 'Your project description',
+#     'VERSION': '1.0.0',
+#     'SERVE_INCLUDE_SCHEMA': False,
 # }
-
-# CORS_ALLOWED_ORIGINS = [
-#     '<http://localhost:8000>',  # Замените на адрес вашего фронтенд-сервера
-# ]
-#
-# CORS_ALLOW_ALL_ORIGINS = False
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-}
-
-STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
-
-STRIPE_API_URL = os.getenv('STRIPE_API_URL')
 
 CELERY_BEAT_SCHEDULE = {
     'check_last_login': {
