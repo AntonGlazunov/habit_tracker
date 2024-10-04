@@ -30,7 +30,7 @@ class AssociatedWayValidator:
     def __call__(self, value):
         associated_way = dict(value).get(self.field)
         if associated_way is not None and not associated_way.is_nice_way:
-            raise ValidationError(f"В поле 'associated_way' не приятная привычка")
+            raise ValidationError("В поле 'associated_way' не приятная привычка")
 
 
 class IsNiceWayValidator:
@@ -45,7 +45,7 @@ class IsNiceWayValidator:
         associated_way = dict(value).get(self.associated_way)
         if is_nice_way:
             if reward or associated_way is not None:
-                raise ValidationError(f"Проверьте поля 'reward' 'associated_way' у приятной привычки нет вознаграждений")
+                raise ValidationError("Проверьте поля 'reward' 'associated_way' у приятной привычки нет вознаграждений")
 
 
 class PeriodicityValidator:
@@ -55,4 +55,4 @@ class PeriodicityValidator:
     def __call__(self, value):
         periodicity = dict(value).get(self.field)
         if int(periodicity) > 7:
-            raise ValidationError(f"Периодичность 'periodicity' привычки должна быть чаще раза в неделю")
+            raise ValidationError("Периодичность 'periodicity' привычки должна быть чаще раза в неделю")
