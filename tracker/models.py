@@ -18,16 +18,13 @@ class Way(models.Model):
     is_nice_way = models.BooleanField(default=False, verbose_name='Приятная привычка')
     associated_way = models.ForeignKey('self', on_delete=models.SET_NULL, verbose_name='Связанная привычка', **NULLABLE)
     periodicity = models.IntegerField(verbose_name='Периодичность в днях')
-    reward = models.CharField(max_length=200, verbose_name='Вознаграждение')
-    units_measurement = models.CharField(max_length=2, verbose_name='Еденицы измерения времени выполнения',
-                                         choices=UNITS_MEASUREMENT_CHOICES,
-                                         **NULLABLE)
-    time_execution = models.IntegerField(verbose_name='Время в выбраных еденицых измерения')
+    reward = models.CharField(max_length=200, verbose_name='Вознаграждение', **NULLABLE)
+    time_execution = models.IntegerField(verbose_name='Время в секундах')
     is_public = models.BooleanField(default=False, verbose_name='Публичная привычка')
 
     def __str__(self):
         return (f'{self.owner} {self.action} {self.is_nice_way} {self.associated_way} {self.periodicity} {self.reward} '
-                f'{self.units_measurement} {self.time_execution} {self.is_public}')
+                f'{self.time_execution} {self.is_public}')
 
     class Mets:
         verbose_name = 'Привычка'

@@ -24,6 +24,8 @@ celery = "^5.4.0"
 eventlet = "^0.37.0"
 redis = "^5.1.0"
 django-celery-beat = "^2.7.0"
+python-telegram-bot = "^21.6"
+pytelegrambotapi = "^4.23.0"
 
 
 [build-system]
