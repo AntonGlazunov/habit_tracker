@@ -15,3 +15,10 @@ class WaySerializer(serializers.ModelSerializer):
                       AssociatedWayValidator(field='associated_way'),
                       IsNiceWayValidator(is_nice_way='is_nice_way', reward='reward', associated_way='associated_way'),
                       PeriodicityValidator(field='periodicity')]
+
+
+class WayPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Way
+        fields = ['spot', 'data_time', 'action', 'is_nice_way', 'periodicity', 'reward', 'associated_way',
+                  'time_execution']

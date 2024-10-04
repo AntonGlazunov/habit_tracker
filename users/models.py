@@ -11,6 +11,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=35, verbose_name='телефон', **NULLABLE)
     country = models.CharField(max_length=100, verbose_name='страна', **NULLABLE)
     last_login = models.DateField(auto_now=False, verbose_name='Дата последнего входа', **NULLABLE)
+    chat_id = models.CharField(max_length=12, verbose_name='ID чата телеграм', **NULLABLE)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

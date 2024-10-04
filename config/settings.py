@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,7 +62,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -158,8 +158,6 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-
-
 CACHE_ENABLE = os.getenv('CACHE_ENABLE') == 'True'
 
 if CACHE_ENABLE:
@@ -177,7 +175,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
-    # 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
@@ -191,18 +189,25 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-# SPECTACULAR_SETTINGS = {
-#     'TITLE': 'Your Project API',
-#     'DESCRIPTION': 'Your project description',
-#     'VERSION': '1.0.0',
-#     'SERVE_INCLUDE_SCHEMA': False,
-# }
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Kr DRF API',
+    'DESCRIPTION': 'Project for skypro university python',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 CELERY_BEAT_SCHEDULE = {
-    'check_last_login': {
-        'task': 'university.tasks.check_last_login',  # Путь к задаче
+    'check_today_ways': {
+        'task': 'tracker.tasks.check_today_ways',  # Путь к задаче
         'schedule': timedelta(minutes=2),  # Расписание выполнения задачи
     },
 }
 
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'redis://127.0.0.1:6379',
+]
+
+CORS_ALLOW_ALL_ORIGINS = False
