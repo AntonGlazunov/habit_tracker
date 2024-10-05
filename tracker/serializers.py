@@ -8,13 +8,14 @@ from tracker.validators import RewardValidator, TimeExecutionValidator, Associat
 class WaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Way
-        fields = ['spot', 'data_time', 'action', 'is_nice_way', 'periodicity', 'reward', 'associated_way',
+        fields = ['pk', 'spot', 'data_time', 'action', 'is_nice_way', 'periodicity', 'reward', 'associated_way',
                   'time_execution', 'is_public']
         validators = [RewardValidator(reward='reward', associated_way='associated_way'),
                       TimeExecutionValidator(field='time_execution'),
                       AssociatedWayValidator(field='associated_way'),
                       IsNiceWayValidator(is_nice_way='is_nice_way', reward='reward', associated_way='associated_way'),
                       PeriodicityValidator(field='periodicity')]
+        extra_kwargs = {'pk': {'read_only': True}}
 
 
 class WayPublicSerializer(serializers.ModelSerializer):

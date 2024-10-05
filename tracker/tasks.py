@@ -24,5 +24,10 @@ def check_today_ways():
                 update_time = way.data_time + relativedelta(days=+int(way.periodicity))
                 way.data_time = update_time
                 way.save()
-            sleep(5)
+                sleep(5)
+                return 'Рассылка успешна'
+            else:
+                return 'Ошибка отправки'
+        else:
+            return 'Пользователь не добавил chat_id'
 
