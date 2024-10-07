@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.test import APITestCase, APIClient
@@ -9,24 +11,29 @@ from users.models import User
 
 class WayAPITestCase(APITestCase):
 
-
     def setUp(self) -> None:
+        tz = datetime.timezone(datetime.timedelta(hours=3))
         user1 = User.objects.create(email='test1@mail.com')
         user2 = User.objects.create(email='test2@mail.com')
         user3 = User.objects.create(email='test3@mail.com')
-        Way.objects.create(pk=2, owner=user1, spot='test1', data_time='2024-10-05T01:57:20', action='test1',
+        Way.objects.create(pk=2, owner=user1, spot='test1',
+                           data_time=datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), action='test1',
                            periodicity=1,
                            time_execution=120)
-        Way.objects.create(pk=3, owner=user2, spot='test2', data_time='2024-10-05T01:57:20', action='test2',
+        Way.objects.create(pk=3, owner=user2, spot='test2',
+                           data_time=datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), action='test2',
                            periodicity=2,
                            time_execution=120, is_public=True)
-        Way.objects.create(pk=4, owner=user3, spot='test2', data_time='2024-10-05T01:57:20', action='test2',
+        Way.objects.create(pk=4, owner=user3, spot='test2',
+                           data_time=datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), action='test2',
                            periodicity=2, is_nice_way=True, time_execution=120, is_public=True)
 
     def test_way_create(self):
+        self.maxDiff = None
+        tz = datetime.timezone(datetime.timedelta(hours=3))
         data = {
             'spot': 'test3',
-            'data_time': '2024-10-05T01:57:20',
+            'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
             'action': 'test3',
             'is_nice_way': True,
             'periodicity': 3,
@@ -49,7 +56,7 @@ class WayAPITestCase(APITestCase):
 
         data = {
             'spot': 'test3',
-            'data_time': '2024-10-05T01:57:20',
+            'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
             'action': 'test3',
             'is_nice_way': True,
             'associated_way': 3,
@@ -84,7 +91,7 @@ class WayAPITestCase(APITestCase):
 
         data = {
             'spot': 'test3',
-            'data_time': '2024-10-05T01:57:20',
+            'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
             'action': 'test3',
             'is_nice_way': True,
             'periodicity': 7,
@@ -107,7 +114,7 @@ class WayAPITestCase(APITestCase):
             {
                 'pk': 1,
                 'spot': 'test3',
-                'data_time': '2024-10-05T01:57:20+03:00',
+                'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                 'action': 'test3',
                 'is_nice_way': True,
                 'periodicity': 7,
@@ -123,6 +130,8 @@ class WayAPITestCase(APITestCase):
         )
 
     def test_way_list(self):
+        self.maxDiff = None
+        tz = datetime.timezone(datetime.timedelta(hours=3))
         response = self.client.get('/tracker/way/')
 
         self.assertEqual(
@@ -144,7 +153,7 @@ class WayAPITestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {'count': 1, 'next': None, 'previous': None, 'results': [
-                {'pk': 2, 'action': 'test1', 'associated_way': None, 'data_time': '2024-10-05T01:57:20+03:00',
+                {'pk': 2, 'action': 'test1', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                  'is_nice_way': False, 'is_public': False, 'periodicity': 1, 'reward': None, 'spot': 'test1',
                  'time_execution': 120}]}
         )
@@ -163,12 +172,14 @@ class WayAPITestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {'count': 1, 'next': None, 'previous': None, 'results': [
-                {'pk': 3, 'action': 'test2', 'associated_way': None, 'data_time': '2024-10-05T01:57:20+03:00',
+                {'pk': 3, 'action': 'test2', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                  'is_nice_way': False, 'is_public': True, 'periodicity': 2, 'reward': None, 'spot': 'test2',
                  'time_execution': 120}]}
         )
 
     def test_way_retrieve(self):
+        self.maxDiff = None
+        tz = datetime.timezone(datetime.timedelta(hours=3))
         response = self.client.get('/tracker/way/1/')
 
         self.assertEqual(
@@ -189,7 +200,8 @@ class WayAPITestCase(APITestCase):
 
         self.assertEqual(
             response.json(),
-            {'pk': 2, 'action': 'test1', 'associated_way': None, 'data_time': '2024-10-05T01:57:20+03:00',
+            {'pk': 2, 'action': 'test1', 'associated_way': None,
+             'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
              'is_nice_way': False, 'is_public': False, 'periodicity': 1, 'reward': None, 'spot': 'test1',
              'time_execution': 120}
         )
@@ -219,9 +231,11 @@ class WayAPITestCase(APITestCase):
         )
 
     def test_way_put(self):
+        self.maxDiff = None
+        tz = datetime.timezone(datetime.timedelta(hours=3))
         data = {
             'spot': 'test3',
-            'data_time': '2024-10-05T01:57:20',
+            'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
             'action': 'test3',
             'is_nice_way': True,
             'periodicity': 3,
@@ -242,7 +256,7 @@ class WayAPITestCase(APITestCase):
         client = APIClient()
         client.force_authenticate(user=user)
 
-        data = {'spot': 'test1', 'data_time': '2024-10-05T01:57:20+03:00', 'action': 'test1', 'associated_way': 3,
+        data = {'spot': 'test1', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test1', 'associated_way': 3,
                 'is_nice_way': True, 'is_public': False, 'periodicity': 8, 'reward': 'test1', 'time_execution': 150}
 
         response = client.put(
@@ -268,7 +282,7 @@ class WayAPITestCase(APITestCase):
             ValidationError
         )
 
-        data = {'spot': 'test5', 'data_time': '2024-10-05T01:57:20+03:00', 'action': 'test2',
+        data = {'spot': 'test5', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test2',
                 'is_nice_way': False, 'is_public': True, 'periodicity': 7, 'reward': 'test1', 'time_execution': 100}
 
         response = client.put(
@@ -286,7 +300,7 @@ class WayAPITestCase(APITestCase):
             {
                 'pk': 2,
                 'spot': 'test5',
-                'data_time': '2024-10-05T01:57:20+03:00',
+                'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                 'action': 'test2',
                 'is_nice_way': False,
                 'periodicity': 7,
@@ -312,9 +326,11 @@ class WayAPITestCase(APITestCase):
         )
 
     def test_way_patch(self):
+        self.maxDiff = None
+        tz = datetime.timezone(datetime.timedelta(hours=3))
         data = {
             'spot': 'test3',
-            'data_time': '2024-10-05T01:57:20',
+            'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
             'action': 'test3',
             'is_nice_way': True,
             'periodicity': 3,
@@ -335,7 +351,7 @@ class WayAPITestCase(APITestCase):
         client = APIClient()
         client.force_authenticate(user=user)
 
-        data = {'spot': 'test1', 'data_time': '2024-10-05T01:57:20+03:00', 'action': 'test1', 'associated_way': 3,
+        data = {'spot': 'test1', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test1', 'associated_way': 3,
                 'is_nice_way': True, 'is_public': False, 'periodicity': 8, 'reward': 'test1', 'time_execution': 150}
 
         response = client.patch(
@@ -361,7 +377,7 @@ class WayAPITestCase(APITestCase):
             ValidationError
         )
 
-        data = {'spot': 'test5', 'data_time': '2024-10-05T01:57:20+03:00', 'action': 'test2',
+        data = {'spot': 'test5', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test2',
                 'is_nice_way': False, 'is_public': True, 'periodicity': 7, 'reward': 'test1', 'time_execution': 100}
 
         response = client.patch(
@@ -379,7 +395,7 @@ class WayAPITestCase(APITestCase):
             {
                 'pk': 2,
                 'spot': 'test5',
-                'data_time': '2024-10-05T01:57:20+03:00',
+                'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                 'action': 'test2',
                 'is_nice_way': False,
                 'periodicity': 7,
@@ -405,6 +421,7 @@ class WayAPITestCase(APITestCase):
         )
 
     def test_way_delite(self):
+        self.maxDiff = None
         response = self.client.delete('/tracker/way/1/')
 
         self.assertEqual(
@@ -431,7 +448,6 @@ class WayAPITestCase(APITestCase):
         )
 
     def test_tasks_and_send_message_telegrsm(self):
-
         response = check_today_ways()
 
         self.assertEqual(
@@ -461,8 +477,8 @@ class WayAPITestCase(APITestCase):
         )
 
     def test_way_public_list(self):
-
         self.maxDiff = None
+        tz = datetime.timezone(datetime.timedelta(hours=3))
 
         response = self.client.get('/tracker/way-public-list/')
 
@@ -482,13 +498,13 @@ class WayAPITestCase(APITestCase):
             status.HTTP_200_OK
         )
 
-    #     self.assertEqual(
-    #         response.json(),
-    #         {'count': 2, 'next': None, 'previous': None, 'results': [
-    #             {'action': 'test2', 'associated_way': None, 'data_time': '2024-10-05T01:57:20+03:00',
-    #              'is_nice_way': False, 'is_public': True, 'periodicity': 2, 'pk': 3, 'reward': None, 'spot': 'test2',
-    #              'time_execution': 120},
-    #             {'action': 'test2', 'associated_way': None, 'data_time': '2024-10-05T01:57:20+03:00',
-    #              'is_nice_way': True, 'is_public': True, 'periodicity': 2, 'pk': 4, 'reward': None, 'spot': 'test2',
-    #              'time_execution': 120}]}
-    #     )
+        self.assertEqual(
+            response.json(),
+            {'count': 2, 'next': None, 'previous': None, 'results': [
+                {'action': 'test2', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
+                 'is_nice_way': False, 'periodicity': 2, 'reward': None, 'spot': 'test2',
+                 'time_execution': 120},
+                {'action': 'test2', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
+                 'is_nice_way': True, 'periodicity': 2, 'reward': None, 'spot': 'test2',
+                 'time_execution': 120}]}
+        )

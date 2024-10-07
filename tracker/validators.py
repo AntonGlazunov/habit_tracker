@@ -54,5 +54,5 @@ class PeriodicityValidator:
 
     def __call__(self, value):
         periodicity = dict(value).get(self.field)
-        if int(periodicity) > 7:
+        if int(periodicity) > 7 or 0 >= int(periodicity):
             raise ValidationError("Периодичность 'periodicity' привычки должна быть чаще раза в неделю")

@@ -16,7 +16,7 @@ class WayViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == 'create' or self.action == 'list':
             permission_classes = [IsAuthenticated]
         else:
             permission_classes = [IsOwner]
