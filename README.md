@@ -4,19 +4,14 @@
 
 python manage.py csu
 
-команды для запуска проекта:
+команда для создания билда и первого запуска:
 
-python manage.py runserver
+docker-compose up -d --build
 
-для Windows:
+команда для запуска:
 
-celery -A config worker -l INFO -P eventlet
+docker-compose up
 
-celery -A config beat -l INFO 
+команда для остановки работы программы:
 
-для других систем:
-
-celery -A config worker -l INFO
-
-celery -A config beat -l INFO
-
+docker-compose down 
