@@ -153,7 +153,8 @@ class WayAPITestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {'count': 1, 'next': None, 'previous': None, 'results': [
-                {'pk': 2, 'action': 'test1', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
+                {'pk': 2, 'action': 'test1', 'associated_way': None,
+                 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                  'is_nice_way': False, 'is_public': False, 'periodicity': 1, 'reward': None, 'spot': 'test1',
                  'time_execution': 120}]}
         )
@@ -172,7 +173,8 @@ class WayAPITestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {'count': 1, 'next': None, 'previous': None, 'results': [
-                {'pk': 3, 'action': 'test2', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
+                {'pk': 3, 'action': 'test2', 'associated_way': None,
+                 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                  'is_nice_way': False, 'is_public': True, 'periodicity': 2, 'reward': None, 'spot': 'test2',
                  'time_execution': 120}]}
         )
@@ -256,7 +258,8 @@ class WayAPITestCase(APITestCase):
         client = APIClient()
         client.force_authenticate(user=user)
 
-        data = {'spot': 'test1', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test1', 'associated_way': 3,
+        data = {'spot': 'test1', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
+                'action': 'test1', 'associated_way': 3,
                 'is_nice_way': True, 'is_public': False, 'periodicity': 8, 'reward': 'test1', 'time_execution': 150}
 
         response = client.put(
@@ -282,7 +285,8 @@ class WayAPITestCase(APITestCase):
             ValidationError
         )
 
-        data = {'spot': 'test5', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test2',
+        data = {'spot': 'test5', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
+                'action': 'test2',
                 'is_nice_way': False, 'is_public': True, 'periodicity': 7, 'reward': 'test1', 'time_execution': 100}
 
         response = client.put(
@@ -351,7 +355,8 @@ class WayAPITestCase(APITestCase):
         client = APIClient()
         client.force_authenticate(user=user)
 
-        data = {'spot': 'test1', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test1', 'associated_way': 3,
+        data = {'spot': 'test1', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
+                'action': 'test1', 'associated_way': 3,
                 'is_nice_way': True, 'is_public': False, 'periodicity': 8, 'reward': 'test1', 'time_execution': 150}
 
         response = client.patch(
@@ -377,7 +382,8 @@ class WayAPITestCase(APITestCase):
             ValidationError
         )
 
-        data = {'spot': 'test5', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'), 'action': 'test2',
+        data = {'spot': 'test5', 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%d %H:%M%z'),
+                'action': 'test2',
                 'is_nice_way': False, 'is_public': True, 'periodicity': 7, 'reward': 'test1', 'time_execution': 100}
 
         response = client.patch(
@@ -501,10 +507,12 @@ class WayAPITestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {'count': 2, 'next': None, 'previous': None, 'results': [
-                {'action': 'test2', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
+                {'action': 'test2', 'associated_way': None,
+                 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                  'is_nice_way': False, 'periodicity': 2, 'reward': None, 'spot': 'test2',
                  'time_execution': 120},
-                {'action': 'test2', 'associated_way': None, 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
+                {'action': 'test2', 'associated_way': None,
+                 'data_time': datetime.datetime.now(tz=tz).strftime('%Y-%m-%dT%H:%M:00+03:00'),
                  'is_nice_way': True, 'periodicity': 2, 'reward': None, 'spot': 'test2',
                  'time_execution': 120}]}
         )
